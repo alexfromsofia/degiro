@@ -1,14 +1,17 @@
 {
-  "name": "degiro",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "jest": "^25.4.0"
-  }
+    "name": "degiro",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "test": "jest --watch"
+    },
+    "jest": {
+        "verbose": true
+    },
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {
+        "jest": "^25.4.0"
+    }
 }

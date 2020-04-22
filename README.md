@@ -1,4 +1,4 @@
-# Test for JavaScript Developer
+# Test for JavaScript Developer - The only third party lib is Jest - used for the tests.
 
 ## Run `npm install` and then `npm run test` in the root directory to start the tests.
 

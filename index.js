@@ -13,30 +13,50 @@ const products = [
     { id: 12, price: 13 },
 ];
 
+const sortAscending = (a, b) => {
+    if (a.price > b.price) return 1;
+    if (a.price < b.price) return -1;
+
+    if (a.id > b.id) return -1;
+    if (a.id < b.id) return 1;
+};
+
+const sortDescending = (a, b) => {
+    if (a.price > b.price) return -1;
+    if (a.price < b.price) return 1;
+
+    if (a.id > b.id) return 1;
+    if (a.id < b.id) return -1;
+};
+
 /**
     * @params [Array] products - list of products
     * @params [Number] options.size - Optional parameter. By default it
     should be 5
     **/
 function sortProducts(products, options = { size: 5 }) {
-    const highest = [];
-    const lowest = [];
     const { size } = options;
 
-    if (!products || products.length < size * 2) {
+    // Return nullish objects if no products are provided,
+    // size lower than 1, or size is more than the products
+    if (!products || size <= 0 || size > products.length) {
         return { highest: null, lowest: null };
     }
 
+    const highest = [];
+    let lowest = [];
     const length = products.length;
-
-    const sortedProducts = products.sort((a, b) => a.price - b.price);
+    const sortedProducts = products.sort(sortAscending);
 
     highest.push(
-        ...sortedProducts
-            .slice(length - size, length)
-            .sort((a, b) => b.price - a.price)
+        ...sortedProducts.slice(length - size, length).sort(sortDescending)
     );
-    lowest.push(...sortedProducts.slice(0, size));
+
+    if (size * 2 < sortedProducts.length) {
+        lowest.push(...sortedProducts.slice(0, size));
+    } else {
+        lowest = null;
+    }
 
     return { highest, lowest };
 }
@@ -44,4 +64,6 @@ function sortProducts(products, options = { size: 5 }) {
 module.exports = {
     products,
     sortProducts,
+    sortDescending,
+    sortAscending
 };

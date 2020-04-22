@@ -1,4 +1,4 @@
-const products = [
+const productsList = [
     { id: 1, price: 10 },
     { id: 2, price: 11 },
     { id: 3, price: 1 },
@@ -13,6 +13,13 @@ const products = [
     { id: 12, price: 13 },
 ];
 
+const noValue = { highest: null, lowest: null };
+
+/**
+ * Will sort ascending an array of objects with priority to price and then to id
+ * @param {Object} a
+ * @param {Object} b
+ */
 const sortAscending = (a, b) => {
     if (a.price > b.price) return 1;
     if (a.price < b.price) return -1;
@@ -21,12 +28,39 @@ const sortAscending = (a, b) => {
     if (a.id < b.id) return 1;
 };
 
+/**
+ * Will sort descending an array of objects with priority to price and then to id
+ * @param {Object} a
+ * @param {Object} b
+ */
 const sortDescending = (a, b) => {
     if (a.price > b.price) return -1;
     if (a.price < b.price) return 1;
 
     if (a.id > b.id) return 1;
     if (a.id < b.id) return -1;
+};
+
+/**
+ * Basic memoize function which takes advantage of clojures.
+ * If inner function is called with different arguments it will store
+ * them in the cache. If called with the same args, we get the result from cache.
+ * @param {Function} cb
+ */
+const memoize = (cb) => {
+    const cache = {};
+
+    return (...args) => {
+        const stringifiedArgs = JSON.stringify(args);
+        if (cache[stringifiedArgs]) {
+            return { highest: null, lowest: null };
+        }
+
+        const result = cb(...args);
+        cache[stringifiedArgs] = result;
+
+        return result;
+    };
 };
 
 /**
@@ -46,12 +80,15 @@ function sortProducts(products, options = { size: 5 }) {
     const highest = [];
     let lowest = [];
     const length = products.length;
-    const sortedProducts = products.sort(sortAscending);
+    // Sort products in ascending order for convenience.
+    const sortedProducts = [...products].sort(sortAscending);
 
     highest.push(
         ...sortedProducts.slice(length - size, length).sort(sortDescending)
     );
 
+    // If there are enough products for the "lowest" list, populate it,
+    // otherwise return it with null value
     if (size * 2 < sortedProducts.length) {
         lowest.push(...sortedProducts.slice(0, size));
     } else {
@@ -62,8 +99,10 @@ function sortProducts(products, options = { size: 5 }) {
 }
 
 module.exports = {
-    products,
+    productsList,
+    memoize,
     sortProducts,
     sortDescending,
-    sortAscending
+    sortAscending,
+    noValue,
 };

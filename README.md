@@ -1,5 +1,7 @@
 # Test for JavaScript Developer
 
+## Run `npm install` and then `npm run test` in the root directory to start the tests.
+
 ### Create a function sortProductsByPrice that takes a list of products and returns an
 
 ### object containing products with the highest and the lowest prices. The test contains 3
